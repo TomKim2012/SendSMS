@@ -54,7 +54,7 @@ class CoreScripts {
 		$parameters = array (
 				'user' => 'megarider',
 				'password' => 'ZpmXSCdd',
-				'sender' => 'PioneerFSA',
+				'sender' => 'SACCOPLUS',
 				'GSM' => $recipient,
 				'SMSText' => $message 
 		);
@@ -78,7 +78,7 @@ class CoreScripts {
 		
 		// Create an instance of the gateway class
 		$username = "TomKim";
-		$shortCode = "PioneerFSA";
+		$shortCode = "SACCOPLUS";
 		$apiKey = "1473c117e56c4f2df393c36dda15138a57b277f5683943288c189b966aae83b4";
 		$gateway = new AfricasTalkingGateway ( $username, $apiKey );
 		

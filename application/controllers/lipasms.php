@@ -14,54 +14,10 @@ class Lipasms extends REST_Controller {
 		$this->load->library ( 'CoreScripts' );
 		$this->load->model ( 'Member_Model', 'members' );
 	}
-	function custSms_get() {
-		
-		// Add Balance from the text
-		if ($this->get ( "phoneNumber" )) {
-			
-			$phone = $this->get ( "phoneNumber" );
-			$custData = $this->members->getSingleCustomer ( 'phone', $phone );
-			
-
-			if (empty($custData ['userId'])) {
-				$message = 'Dear Customer, your phoneNumber is not registered.' . 'Kindly contact your nearest branch';
-				echo $message;
-				$this->corescripts->_send_sms2 ( $phone, $message );
-				return;
-			}
-			
-			$response = $this->corescripts->getTotals ( $custData ['userId'] );
-			
-			 // print_r($response);
-			 // return;
-			 
-			if (empty ( $response )) {
-				$message = 'Dear Customer, you dont have any registered tills.' . 'Kindly call branch to be assigned a Till';
-				echo $message;
-				$this->corescripts->_send_sms2 ( $custData ['mobileNo'], $message );
-				return;
-			} else if ($response [0] ['count'] == 0) {
-				$message = "Dear " . $custData ['firstName'] . ", There were no Lipa Na Mpesa transactions for your tills today.";
-			} else {
-				
-				// //---------------Compose the SMS-----------------------------------
-				// $tDate = date ( "d/m/Y" );
-				$tTime = date ( "h:i A" );
-				$message = "Dear " . $custData ['firstName'] . ", Today's Lipa Na Mpesa Summary as at " . $tTime . " is as follows:";
-				$counter = 1;
-				foreach ( $response as $row ) {
-					$message .= "<" . $counter ++ . "." . $row ['business_name'] . "- KES " . number_format ( $row ['totals'] ) . ">";
-				}
-			}
-			echo $message;
-			$sms_feedback = $this->corescripts->_send_sms2 ( $custData['mobileNo'], $message );
-			if ($sms_feedback) {
-			echo "Success";
-			} else {
-			echo "Failed";
-			}
-		} else {
-			echo 'No phone Number sent';
-		}
+	
+	function SendSMS_get($phoneNumber, $message) {
+		// Get Transacted Merchants phone Numbers
+		print_r($this->corescripts->_send_sms2 ( $phoneNumber, $message ));	
 	}
+	
 }
